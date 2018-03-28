@@ -24,6 +24,17 @@ void Target::respawn(std::mt19937 rng, Board & brd, Graphics & gfx, const Snake&
 		tLoc.x = xDist(rng);
 		tLoc.y = yDist(rng);
 		locations[currentLocationIdx++] = tLoc ;
+		
+		
+		
+		
+		
+		//TODO trying to see if the location was previously used. found a bug in that
+
+
+
+
+
 
 	} while (snek.isInsideSnek(tLoc) || checkPreviousLocations(tLoc));
 }
