@@ -44,7 +44,7 @@ private:
 	void UpdateModel();
 	void _getUserInput();
 	void restartGame();
-	
+	const bool canMoveInDirection(const Location& direction) const;
 private:
 	MainWindow& wnd;
 	Graphics gfx;

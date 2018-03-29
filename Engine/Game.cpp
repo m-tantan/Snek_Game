@@ -41,11 +41,10 @@ Game::Game(MainWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();
-	_getUserInput();
-
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
+	_canMove = true;
 
 }
 
@@ -80,6 +79,7 @@ void Game::UpdateModel()
 	{
 		
 		//User input section
+		_getUserInput();
 
 		//updating mechanism section
 		++timeCounter;
@@ -131,41 +131,41 @@ void Game::_getUserInput()
 {
 	//Location segAfterHead = snek.getSnakeSeg(1);
 	//Location head = snek.getSnakeHead();
-	//
-	////#define RIGHT Location{1, 0}
-	////#define LEFT Location{-1, 0}
-	////#define DOWN Location{0, 1}
-	////#define UP Location{0, -1}
-	//if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	//{
-	//	if (segAfterHead != (head += (UP)))
-	//	{
-	//		deltaLoc = DOWN;
-	//	}
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_UP))
-	//{
-	//	if (segAfterHead != (head += (DOWN)))
-	//	{
-	//		deltaLoc = UP;
-	//	}
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	//{
-	//	if (segAfterHead != (head += (RIGHT)))
-	//	{
-	//		deltaLoc = LEFT;
-	//	}
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	//{
-	//	if (segAfterHead != (head += (LEFT)))
-	//	{
-	//		deltaLoc = RIGHT;
-	//	}
-	//}
 	
+	//#define RIGHT Location{1, 0}
+	//#define LEFT Location{-1, 0}
+	//#define DOWN Location{0, 1}
+	//#define UP Location{0, -1}
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		if (canMoveInDirection(DOWN) && deltaLoc != UP)
+		{
+			deltaLoc = DOWN;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		if (canMoveInDirection(UP) && deltaLoc != DOWN)
+		{
+			deltaLoc = UP;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		if (canMoveInDirection(LEFT) && deltaLoc != RIGHT)
+		{
+			deltaLoc = LEFT;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		if (canMoveInDirection(RIGHT) && deltaLoc != LEFT)
+		{
+			deltaLoc = RIGHT;
+		}
+	}
+	
+	/*if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
 		if (deltaLoc != (UP))
 		{
@@ -194,7 +194,7 @@ void Game::_getUserInput()
 			deltaLoc = RIGHT;
 		}
 	}
-
+*/
 }
 
 void Game::restartGame()
@@ -203,6 +203,18 @@ void Game::restartGame()
 	snek.reset();
 	gameSpeed = INITIAL_SPEED;
 	framesToUpdate = gameSpeed;
+}
+
+const bool Game::canMoveInDirection(const Location & direction) const
+{
+	Location head = snek.getSnakeHead();
+	Location segOne = snek.getSnakeSeg(1);
+	Location next = (head += direction);
+	if (next != segOne)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Game::ComposeFrame()
