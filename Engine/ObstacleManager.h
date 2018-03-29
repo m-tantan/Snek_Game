@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Board.h"
 #include "Snake.h"
+
 #include <vector>
 
 class ObstacleManager
@@ -24,6 +25,7 @@ public:
 	ObstacleManager() = default;
 	ObstacleManager(std::mt19937 originalRng) : rng(originalRng) {};
 	void addObstacle();
+	//void addObstacle(const Snake& Snek, const Target& trgt);
 	bool isLocTaken(const Location& loc);
 	void drawObstacles(Board& brd);
 	const int getObstacleAmount() const { return _nObstacles; };

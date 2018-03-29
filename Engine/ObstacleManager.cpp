@@ -13,7 +13,7 @@ void ObstacleManager::drawObstacles(Board & brd)
 	}
 }
 
-void ObstacleManager::addObstacle( )
+void ObstacleManager::addObstacle()
 {
 	ObstacleManager::Obstacle ob;
 	Location rndLoc;
@@ -28,6 +28,7 @@ void ObstacleManager::addObstacle( )
 		rndLoc = Location{ x , y };
 
 	} while (isLocTaken(rndLoc));
+//} while (isLocTaken(rndLoc) || Snek.isInsideSnek(rndLoc) || trgt.getLocation() == rndLoc);
 	ob.initObstacle(rndLoc, _nObstacles);
 	obstacles.push_back(ob);
 	++_nObstacles;

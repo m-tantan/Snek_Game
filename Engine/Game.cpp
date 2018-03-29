@@ -48,31 +48,40 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{	if (wnd.kbd.KeyIsPressed('R'))
+{
 
-
-	if (wnd.kbd.KeyIsPressed('R'))
+	// For testing purposes
+	if (wnd.kbd.KeyIsPressed('O'))
 	{
-		restartGame();
-		snek.reset();
-		om.clearObstacles();
-		deltaLoc = { 1,0 }; // Resets direction
-		_gameOver = false; // Allows player to play
-		trgt.respawn(rng, brd, gfx, snek);
+		om.addObstacle();
 	}
+
+	if (wnd.kbd.KeyIsPressed('S'))
+	{
+		if (framesToUpdate > 3) {
+			--framesToUpdate;
+			gameSpeed = 3;
+
+		}
+			
+	}
+
 	if (!_gameOver)
 	{
 		//User input section
 		_getUserInput();
 
-		//Move mechanism section
+		//updating mechanism section
 		++timeCounter;
 		if (timeCounter % 400 == 0)
 		{
-			if (gameSpeed > 3)
+			if (gameSpeed > 2)
 			{
-				_generateObstacles = true;
 				framesToUpdate = --gameSpeed;
+				if (gameSpeed == 3)
+				{
+					_generateObstacles = true;
+				}
 			}
 			if (_generateObstacles)
 			{
@@ -83,7 +92,10 @@ void Game::UpdateModel()
 		if (screenCounter % framesToUpdate == 0)
 		{
 			const Location next = snek.getSnakeNext(deltaLoc);
-			if (!snek.isInsideBoard(brd, next) || snek.isInsideSnekExceptEnd(next) || om.checkCollisions(next))
+			bool one = !snek.isInsideBoard(brd, next);
+			bool two = snek.isInsideSnekExceptEnd(next);
+			bool three = om.checkCollisions(next);
+			if ( one || two || three )
 			{
 				_gameOver = true;
 			}
@@ -96,45 +108,59 @@ void Game::UpdateModel()
 			if (wnd.kbd.KeyIsPressed(VK_CONTROL) || snek.isInsideSnek(trgt.getLocation()))
 			{
 				snek.grow();
-				trgt.respawn(rng, brd, gfx, snek);
+				//trgt.respawn(rng, brd, gfx, snek);
 			}
 
 		}
 		++screenCounter;
 
 	}
+	else {
+		if (wnd.kbd.KeyIsPressed('R'))
+		{
+			restartGame();
+			snek.reset();
+			om.clearObstacles();
+			deltaLoc = { 1,0 }; // Resets direction
+			_gameOver = false; // Allows player to play
+			trgt.respawn(rng, brd, gfx, snek);
+		}
+	}
 }
 
 void Game::_getUserInput()
 {
+	Location prvsDelta = deltaLoc;
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
-		if (deltaLoc != (UP))
+		if (prvsDelta != (UP))
 		{
 			deltaLoc = DOWN;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
-		if (deltaLoc != DOWN)
+		if (prvsDelta != DOWN)
 		{
 			deltaLoc = UP;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
-		if (deltaLoc != RIGHT)
+		if (prvsDelta != RIGHT)
 		{
 			deltaLoc = LEFT;
 		}
 	}
+
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		if (deltaLoc != LEFT)
+		if (prvsDelta != LEFT)
 		{
 			deltaLoc = RIGHT;
 		}
 	}
+
 }
 
 void Game::restartGame()
