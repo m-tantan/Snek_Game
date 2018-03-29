@@ -54,10 +54,10 @@ void Game::UpdateModel()
 	{
 		restartGame();
 		snek.reset();
-		
-
+		om.clearObstacles();
 		deltaLoc = { 1,0 }; // Resets direction
 		_gameOver = false; // Allows player to play
+		trgt.respawn(rng, brd, gfx, snek);
 	}
 	if (!_gameOver)
 	{

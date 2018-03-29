@@ -1,5 +1,7 @@
 #include "ObstacleManager.h"
 
+
+
 void ObstacleManager::drawObstacles(Board & brd)
 {
 	for (int i = 0; i < _nObstacles; ++i)
@@ -10,20 +12,19 @@ void ObstacleManager::drawObstacles(Board & brd)
 
 void ObstacleManager::addObstacle( )
 {
-	std::uniform_int_distribution<int> xDist(Board::_startX, Board::width + Board::_startX);
-	std::uniform_int_distribution<int> yDist(Board::_startY, Board::height + Board::_startY);
-
 	Location rndLoc;
-
+	int x = 0;
+	int y = 0;
 	do
 	{
-		int x = xDist(rng);
-		int y = yDist(rng);
+
+		x = (rand() % (Board::width - 2)) + (Board::_startX + 1);
+		y = (rand() % (Board::height - 2)) + (Board::_startY + 1);
 		rndLoc = Location{ x , y };
 
-	} while (false);
-
-	obstacles[_nObstacles].initObstacle(rndLoc, _nObstacles);
+	} while (checkIfEmpty(rndLoc));
+	ObstacleManager::Obstacle j = initObstacle(rndLoc, _nObstacles);
+	obstacles.push_back(j);
 	++_nObstacles;
 
 }
@@ -40,8 +41,22 @@ bool ObstacleManager::checkCollisions(const Location & snakeLoc)
 	return false;
 }
 
-void ObstacleManager::Obstacle::initObstacle(const Location& obstacleLocation, const int& num)
+void ObstacleManager::clearObstacles()
 {
+	obstacles.clear();
+}
+
+
+
+ObstacleManager::Obstacle::Obstacle(const Color & color, const Location & loc)
+{
+	oLoc = loc;
+	oClr = color;
+}
+
+ObstacleManager::Obstacle ObstacleManager::Obstacle::initObstacle(const Location & obstacleLocation, const int & num)
+{
+
 	oLoc = obstacleLocation;
 
 	int clrIdx = num % 10;
@@ -92,7 +107,7 @@ void ObstacleManager::Obstacle::initObstacle(const Location& obstacleLocation, c
 	else oClrG = 255;
 
 	oClr = Color(oClrR, oClrG, oClrB);
-
+	return ObstacleManager::Obstacle(oClr, obstacleLocation);
 }
 
 void ObstacleManager::Obstacle::drawObstacle(Board & brd)

@@ -13,12 +13,9 @@ public:
 	void draw(Board& brd);
 	const Location&  getLocation() const;
 private:
-	const bool checkPreviousLocations(const Location& loc);
 	int currentLocationIdx = 0;
 	bool isInitiated = false;
-	static constexpr int maxAmountOfTargets = 500;
 	Location tLoc;
-	Location locations[maxAmountOfTargets];
 	static constexpr Color clr = Colors::Magenta;
 
 };
