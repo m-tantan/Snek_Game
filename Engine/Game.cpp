@@ -25,7 +25,7 @@
 #define LEFT Location{-1, 0}
 #define DOWN Location{0, 1}
 #define UP Location{0, -1}
-
+#define SEGAFTERHEAD 1
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
@@ -41,6 +41,8 @@ Game::Game(MainWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();
+	_getUserInput();
+
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
@@ -65,11 +67,19 @@ void Game::UpdateModel()
 		}
 			
 	}
-
+	if (wnd.kbd.KeyIsPressed('R'))
+	{
+		restartGame();
+		snek.reset();
+		om.clearObstacles();
+		deltaLoc = { 1,0 }; // Resets direction
+		_gameOver = false; // Allows player to play
+		trgt.respawn(rng, brd, gfx, snek);
+	}
 	if (!_gameOver)
 	{
+		
 		//User input section
-		_getUserInput();
 
 		//updating mechanism section
 		++timeCounter;
@@ -108,46 +118,70 @@ void Game::UpdateModel()
 			if (wnd.kbd.KeyIsPressed(VK_CONTROL) || snek.isInsideSnek(trgt.getLocation()))
 			{
 				snek.grow();
-				//trgt.respawn(rng, brd, gfx, snek);
+				trgt.respawn(rng, brd, gfx, snek);
 			}
 
 		}
 		++screenCounter;
 
 	}
-	else {
-		if (wnd.kbd.KeyIsPressed('R'))
-		{
-			restartGame();
-			snek.reset();
-			om.clearObstacles();
-			deltaLoc = { 1,0 }; // Resets direction
-			_gameOver = false; // Allows player to play
-			trgt.respawn(rng, brd, gfx, snek);
-		}
-	}
 }
 
 void Game::_getUserInput()
 {
-	Location prvsDelta = deltaLoc;
+	//Location segAfterHead = snek.getSnakeSeg(1);
+	//Location head = snek.getSnakeHead();
+	//
+	////#define RIGHT Location{1, 0}
+	////#define LEFT Location{-1, 0}
+	////#define DOWN Location{0, 1}
+	////#define UP Location{0, -1}
+	//if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	//{
+	//	if (segAfterHead != (head += (UP)))
+	//	{
+	//		deltaLoc = DOWN;
+	//	}
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_UP))
+	//{
+	//	if (segAfterHead != (head += (DOWN)))
+	//	{
+	//		deltaLoc = UP;
+	//	}
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	//{
+	//	if (segAfterHead != (head += (RIGHT)))
+	//	{
+	//		deltaLoc = LEFT;
+	//	}
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	//{
+	//	if (segAfterHead != (head += (LEFT)))
+	//	{
+	//		deltaLoc = RIGHT;
+	//	}
+	//}
+	
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
-		if (prvsDelta != (UP))
+		if (deltaLoc != (UP))
 		{
 			deltaLoc = DOWN;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
-		if (prvsDelta != DOWN)
+		if (deltaLoc != DOWN)
 		{
 			deltaLoc = UP;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
-		if (prvsDelta != RIGHT)
+		if (deltaLoc != RIGHT)
 		{
 			deltaLoc = LEFT;
 		}
@@ -155,7 +189,7 @@ void Game::_getUserInput()
 
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		if (prvsDelta != LEFT)
+		if (deltaLoc != LEFT)
 		{
 			deltaLoc = RIGHT;
 		}
@@ -165,6 +199,7 @@ void Game::_getUserInput()
 
 void Game::restartGame()
 {
+	deltaLoc = RIGHT;
 	snek.reset();
 	gameSpeed = INITIAL_SPEED;
 	framesToUpdate = gameSpeed;

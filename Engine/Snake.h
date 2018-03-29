@@ -34,6 +34,8 @@ public:
 	bool isInsideSnekExceptEnd(const Location& checkLoc) const;
 	bool isInsideSnek(const Location& checkLoc) const;
 	void reset();
+	const Location& getSnakeHead() const;
+	const Location& getSnakeSeg(const int& segNum) const;
 private:
 	static constexpr Color headClr = Colors::Green;
 	static constexpr Color bodyClr = Colors::Yellow;

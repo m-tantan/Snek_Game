@@ -128,3 +128,13 @@ void Snake::reset()
 	nSegment[0].setSegLoc(Location{ 5,5 });
 	_length = 1;
 }
+
+const Location & Snake::getSnakeHead() const
+{
+	return nSegment[0].getLocation();
+}
+
+const Location & Snake::getSnakeSeg(const int & segNum) const
+{
+	return nSegment[segNum].getLocation();
+}

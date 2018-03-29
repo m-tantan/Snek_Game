@@ -60,6 +60,7 @@ private:
 	int framesToUpdate = gameSpeed;
 	int framesToIncSpeed = 400;
 	bool _gameOver = false;
+	bool _canMove = true;
 	bool _generateObstacles = false;
 
 	
