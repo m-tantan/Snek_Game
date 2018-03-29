@@ -11,8 +11,8 @@ private:
 	class Obstacle 
 	{
 	public:
-		Obstacle(const Color& color, const Location& loc);
-		ObstacleManager::Obstacle initObstacle(const Location& obstacleLocation, const int& num);
+		Obstacle();
+		void initObstacle(const Location& obstacleLocation, const int& num);
 		void drawObstacle(Board& brd);
 		const Location& getLoc() const { return oLoc; };
 	private:
@@ -24,7 +24,7 @@ public:
 	ObstacleManager() = default;
 	ObstacleManager(std::mt19937 originalRng) : rng(originalRng) {};
 	void addObstacle();
-	bool checkIfEmpty(const Location& loc);
+	bool isLocTaken(const Location& loc);
 	void drawObstacles(Board& brd);
 	const int getObstacleAmount() const { return _nObstacles; };
 	bool checkCollisions(const Location& snakeLoc);

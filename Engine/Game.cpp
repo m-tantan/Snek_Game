@@ -48,7 +48,8 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{
+{	if (wnd.kbd.KeyIsPressed('R'))
+
 
 	if (wnd.kbd.KeyIsPressed('R'))
 	{
