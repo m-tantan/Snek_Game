@@ -138,3 +138,14 @@ const Location & Snake::getSnakeSeg(const int & segNum) const
 {
 	return nSegment[segNum].getLocation();
 }
+const bool Snake::canMoveInDirection(const Location & direction) const
+{
+	Location head = getSnakeHead();
+	Location segOne = getSnakeSeg(1);
+	Location next = (head += direction);
+	if (next != segOne)
+	{
+		return true;
+	}
+	return false;
+}

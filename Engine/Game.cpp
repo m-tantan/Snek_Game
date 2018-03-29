@@ -102,10 +102,7 @@ void Game::UpdateModel()
 		if (screenCounter % framesToUpdate == 0)
 		{
 			const Location next = snek.getSnakeNext(deltaLoc);
-			bool one = !snek.isInsideBoard(brd, next);
-			bool two = snek.isInsideSnekExceptEnd(next);
-			bool three = om.checkCollisions(next);
-			if ( one || two || three )
+			if (!snek.isInsideBoard(brd, next) || snek.isInsideSnekExceptEnd(next) || om.checkCollisions(next))
 			{
 				_gameOver = true;
 			}
@@ -129,37 +126,31 @@ void Game::UpdateModel()
 
 void Game::_getUserInput()
 {
-	//Location segAfterHead = snek.getSnakeSeg(1);
-	//Location head = snek.getSnakeHead();
-	
-	//#define RIGHT Location{1, 0}
-	//#define LEFT Location{-1, 0}
-	//#define DOWN Location{0, 1}
-	//#define UP Location{0, -1}
+
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
-		if (canMoveInDirection(DOWN) && deltaLoc != UP)
+		if (snek.canMoveInDirection(DOWN) && deltaLoc != UP)
 		{
 			deltaLoc = DOWN;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
-		if (canMoveInDirection(UP) && deltaLoc != DOWN)
+		if (snek.canMoveInDirection(UP) && deltaLoc != DOWN)
 		{
 			deltaLoc = UP;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
-		if (canMoveInDirection(LEFT) && deltaLoc != RIGHT)
+		if (snek.canMoveInDirection(LEFT) && deltaLoc != RIGHT)
 		{
 			deltaLoc = LEFT;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		if (canMoveInDirection(RIGHT) && deltaLoc != LEFT)
+		if (snek.canMoveInDirection(RIGHT) && deltaLoc != LEFT)
 		{
 			deltaLoc = RIGHT;
 		}
@@ -205,17 +196,7 @@ void Game::restartGame()
 	framesToUpdate = gameSpeed;
 }
 
-const bool Game::canMoveInDirection(const Location & direction) const
-{
-	Location head = snek.getSnakeHead();
-	Location segOne = snek.getSnakeSeg(1);
-	Location next = (head += direction);
-	if (next != segOne)
-	{
-		return true;
-	}
-	return false;
-}
+
 
 void Game::ComposeFrame()
 {

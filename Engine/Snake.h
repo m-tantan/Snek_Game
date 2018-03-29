@@ -36,6 +36,7 @@ public:
 	void reset();
 	const Location& getSnakeHead() const;
 	const Location& getSnakeSeg(const int& segNum) const;
+	const bool canMoveInDirection(const Location & direction) const;
 private:
 	static constexpr Color headClr = Colors::Green;
 	static constexpr Color bodyClr = Colors::Yellow;
