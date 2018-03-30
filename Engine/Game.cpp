@@ -129,6 +129,7 @@ void Game::_getUserInput()
 
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
+		// if snake is not blocking the movement and direction is not in the direction of the snake
 		if (snek.canMoveInDirection(DOWN) && deltaLoc != UP)
 		{
 			deltaLoc = DOWN;
@@ -136,6 +137,7 @@ void Game::_getUserInput()
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
+		// if snake is not blocking the movement and direction is not in the direction of the snake
 		if (snek.canMoveInDirection(UP) && deltaLoc != DOWN)
 		{
 			deltaLoc = UP;
@@ -143,6 +145,7 @@ void Game::_getUserInput()
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
+		// if snake is not blocking the movement and direction is not in the direction of the snake
 		if (snek.canMoveInDirection(LEFT) && deltaLoc != RIGHT)
 		{
 			deltaLoc = LEFT;
@@ -150,48 +153,20 @@ void Game::_getUserInput()
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
+		// if snake is not blocking the movement and direction is not in the direction of the snake
 		if (snek.canMoveInDirection(RIGHT) && deltaLoc != LEFT)
 		{
 			deltaLoc = RIGHT;
 		}
 	}
 	
-	/*if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		if (deltaLoc != (UP))
-		{
-			deltaLoc = DOWN;
-		}
-	}
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		if (deltaLoc != DOWN)
-		{
-			deltaLoc = UP;
-		}
-	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		if (deltaLoc != RIGHT)
-		{
-			deltaLoc = LEFT;
-		}
-	}
-
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		if (deltaLoc != LEFT)
-		{
-			deltaLoc = RIGHT;
-		}
-	}
-*/
 }
 
 void Game::restartGame()
 {
-	deltaLoc = RIGHT;
 	snek.reset();
+	deltaLoc = RIGHT;
+	_generateObstacles = false;
 	gameSpeed = INITIAL_SPEED;
 	framesToUpdate = gameSpeed;
 }
